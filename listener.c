@@ -19,6 +19,7 @@
 #define MAXBUFLEN 100
 
 // Helper function you can use:
+int getsockname(int socket, struct sockaddr* restrict address, socklen_t* restrict address_len);
 
 //Convert a struct sockaddr address to a string, IPv4 and IPv6:
 
