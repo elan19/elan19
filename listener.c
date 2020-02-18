@@ -102,10 +102,23 @@ int main(void)
 
 	freeaddrinfo(servinfo);
 
-	printf("listener: waiting to recvfrom...\n");
-	printf("bob,\n");
-	printf("family = %d \n",p->ai_family);
-	printf("AF_INET = %d and AF_INET6 = %d and AF_UNSPEC  = %d  and AF_UNIX = %d \n", AF_INET, AF_INET6, AF_UNSPEC, AF_UNIX);
+	struct sockaddr_in sockName;
+	int socket = sizeof(sockName);
+
+	int completeSocket = getsockname(sockfd, &sockName, &socket);
+
+	char dunno[201];
+	int charSize = sizeof(dunno);
+	char* address = inet_ntop(sockName.sin_family, &sockName.sin_addr, &dunno, &charSize);
+
+	
+	printf("Listening on ");
+	printf("%s %d", address, ntohs(sockName.sin_port));
+	printf("\nlistener: waiting to recvfrom...\n");
+
+	//printf("bob,\n");
+	//printf("family = %d \n",p->ai_family);
+	//printf("AF_INET = %d and AF_INET6 = %d and AF_UNSPEC  = %d  and AF_UNIX = %d \n", AF_INET, AF_INET6, AF_UNSPEC, AF_UNIX);
 	
 	
 	while(1){
@@ -124,6 +137,11 @@ int main(void)
 		printf(" %d bytes ", numbytes);
 		buf[numbytes] = '\0';
 		printf(": \"%s\"\n", buf);
+		for (int i = 0; i < numbytes; i++)
+		{
+			printf("%0x", buf[i]);
+		}
+		printf("\n");
 	}
 	close(sockfd);
 
